@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Partners</string>
+    <string name="btn_Save">Save</string>
+    <string name="btn_Cancel">Cancel</string>
+</resources>
