@@ -1,6 +1,8 @@
 package niko.partners;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,9 +43,53 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        check_config();
         create_list_listener();
         intitDB();
         checkDB();
+    }
+
+    private void check_config(){
+        MyConfigParser configParser = new MyConfigParser(this.getApplicationContext(), "config");
+        configParser.check_configfile();
+        if (!configParser.check_if_up_to_date()){
+            SQLiteOpenHelper db = new Database(this,"partners.db",null,1);
+            if(db.getReadableDatabase() == null){
+                try {
+                    throw new Exception("Database error!");
+                } catch (Exception e) {
+                    Log.d("myapp","database error");
+                }
+            }
+            else{
+                SQLiteDatabase data = db.getWritableDatabase();
+                data.rawQuery(SqlQuerries.add_pay_to_plati,null);
+                data.close();
+                db.close();
+            }
+
+
+        }
+
+        /*
+        SharedPreferences preferences = getSharedPreferences("config", Context.MODE_PRIVATE);
+        if (!preferences.contains("Initialized")) {
+            if (!preferences.contains("Version")){
+                Log.d("myapp","need update cuz no version in config");
+                return;
+            }
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("Initialized", "True");
+            editor.putString("Version", Global.version);
+        }
+        else{
+            float current = Float.parseFloat(Global.version);
+            float old = Float.parseFloat(preferences.getString("Version",""));
+            if (current != old){
+                Log.d("myapp","need update");
+            }
+        }
+        */
     }
 
     public void intitDB(){
@@ -113,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 while (c.isAfterLast() == false){
                     String name = c.getString(1);
                     String message = name;
-                    //Toast.makeText(this.getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getApplicationContext(),message,Toast.LENGTH_LONG).show();
                     c.moveToNext();
                 }
             }

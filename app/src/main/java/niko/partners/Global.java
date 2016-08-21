@@ -15,4 +15,6 @@ public class Global {
     public static ArrayList<String> clients = new ArrayList<>();
     public static TreeMap<String,HashMap<String,String>> paymentList = new TreeMap<>();
     public static SQLiteOpenHelper db = null;
+    public static final String version = "1.01";
+
 }

@@ -11,6 +11,7 @@ public class SqlQuerries {
     public static String query_clienti = "CREATE TABLE Clienti (ID int PRIMARY KEY," +
             "Name varchar(255)," +
             "Adress varchar(255));" ;
+
     public static String query_plati = "CREATE TABLE Plati(ID int PRIMARY KEY," +
             "Name varchar(255) ," +
             "Date varchar(255)," +
@@ -19,6 +20,8 @@ public class SqlQuerries {
             "Description varchar(255)," +
             "Explication varchar(255)," +
             "Document_nr varchar(255));";
+
+    public static String add_pay_to_plati = "ALTER TABLE Plati ADD pay varchar(255)";
 
     public static ContentValues InsertIntoClienti(int ID, String name, String address){
         ContentValues values = new ContentValues();
@@ -44,4 +47,6 @@ public class SqlQuerries {
         values.put("Document_nr",document);
         return values;
     }
+
+
 }
